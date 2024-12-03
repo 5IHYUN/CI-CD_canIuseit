@@ -1,6 +1,9 @@
 # 1. Alpine 기반 Node.js 이미지
 FROM node:16-alpine
 
+# 2. curl 설치
+RUN apk add --no-cache curl
+
 # 작업 디렉토리 설정
 WORKDIR /usr/src/app
 
