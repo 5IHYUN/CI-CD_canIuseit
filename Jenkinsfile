@@ -22,7 +22,7 @@ pipeline {
                     sh 'chmod 777 .'
 
                     // .env 파일을 작업 디렉토리에 복사
-								    sh "cat ${MY_ENV_FILE} > .env"
+								    sh "cat ${MY_ENV_FILE} > backend/.env"
 
                 }
             }
@@ -39,7 +39,7 @@ pipeline {
                     sh '''
                     docker run -d --name $DB_CONTAINER_NAME \
                     --network $NETWORK_NAME \
-                    -e MYSQL_ROOT_PASSWORD=cancanii! \
+                    -e MYSQL_ROOT_PASSWORD=tlgus051016 \
                     -e MYSQL_DATABASE=canIuseit_db \
                     -p 3306:3306 mysql:8
                     '''
@@ -50,6 +50,8 @@ pipeline {
         stage('Build Web Container') {
             steps {
                 script {
+                    // Docker 빌드 전에 backend/.env를 빌드 컨텍스트 루트로 복사
+                    sh 'cp backend/.env .'
                     sh 'docker build -t $WEB_IMAGE_NAME .'
                 }
             }
