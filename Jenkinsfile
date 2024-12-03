@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Secret File을 가져오는 부분
         MY_ENV_FILE = credentials('MY_ENV_FILE')  // .env 파일의 Jenkins credentials ID
-        NETWORK_NAME = 'myapp-network'  // 네트워크 이름 
+        NETWORK_NAME = 'mynetwork'  // 네트워크 이름 
         DB_CONTAINER_NAME = 'mysql-container'  // DB 컨테이너 이름 
         WEB_CONTAINER_NAME = 'app-container'  // 웹 컨테이너 이름 
         WEB_IMAGE_NAME = 'my-node-app'  // 웹 이미지 이름 수정
