@@ -7,7 +7,7 @@ pipeline {
         NETWORK_NAME = 'mynetwork'  // 네트워크 이름 
         DB_CONTAINER_NAME = 'mysql-container'  // DB 컨테이너 이름 
         WEB_CONTAINER_NAME = 'app-container'  // 웹 컨테이너 이름 
-        WEB_IMAGE_NAME = 'my-node-app'  // 웹 이미지 이름 수정
+        WEB_IMAGE_NAME = 'my-node-app'  // 웹 이미지 이름 수
         JENKINS_SERVER_ADDR = '34.64.72.211'
     }
 
