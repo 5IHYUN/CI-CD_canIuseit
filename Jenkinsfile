@@ -7,8 +7,13 @@ pipeline {
         NETWORK_NAME = 'mynetwork'  // 네트워크 이름 
         DB_CONTAINER_NAME = 'mysql-container'  // DB 컨테이너 이름 
         WEB_CONTAINER_NAME = 'app-container'  // 웹 컨테이너 이름 
-        WEB_IMAGE_NAME = 'my-node-app'  // 웹 이미지 이름 수
+        WEB_IMAGE_NAME = 'shkim5971/my-node-app:latest'  // 웹 이미지 이름 수
         JENKINS_SERVER_ADDR = '34.64.72.211'
+
+        // Docker Hub 크리덴셜 추가
+        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'  // Docker Hub 크리덴셜 ID
+        DOCKER_HUB_USERNAME = credentials('docker-hub-credentials')  // Docker Hub 사용자 이름
+        DOCKER_HUB_PASSWORD = credentials('docker-hub-credentials')  // Docker Hub 비밀번호
     }
 
     stages {
@@ -84,6 +89,18 @@ pipeline {
 						    			echo "Test failed! HTTP Status: $RESPONSE"
 								    fi
                     '''
+                }
+            }
+        }
+        // Docker Hub에 이미지를 푸시하는 단계 추가
+        stage('Push Image to Docker Hub') {
+            steps {
+                script {
+                    // Docker Hub 로그인
+                    sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
+
+                    // Docker Hub에 이미지 푸시
+                    sh "docker push $WEB_IMAGE_NAME"
                 }
             }
         }
