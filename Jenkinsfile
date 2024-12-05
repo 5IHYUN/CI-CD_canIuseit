@@ -11,9 +11,8 @@ pipeline {
         JENKINS_SERVER_ADDR = '34.64.72.211'
 
         // Docker Hub 크리덴셜 추가
-        // DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'  // Docker Hub 크리덴셜 ID
-        // DOCKER_HUB_USERNAME = credentials('docker-hub-credentials')  // Docker Hub 사용자 이름
-        // DOCKER_HUB_PASSWORD = credentials('docker-hub-credentials')  // Docker Hub 비밀번호
+ // Docker Hub 크리덴셜
+        DOCKER_HUB_CREDENTIALS_ID = 'docker-hub-credentials'  // Docker Hub 크리덴셜 ID
     }
 
     stages {
@@ -92,18 +91,23 @@ pipeline {
                 }
             }
         }
-        // Docker Hub에 이미지를 푸시하는 단계 추가
-        // stage('Push Image to Docker Hub') {
-        //     steps {
-        //         script {
-        //             // Docker Hub 로그인
-        //             sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
+        //Docker Hub에 이미지를 푸시하는 단계 추가
+        stage('Push Image to Docker Hub') {
+            steps {
+                script {
+                    // Docker Hub 로그인 및 이미지 푸시
+                    withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS_ID, 
+                                                     usernameVariable: 'DOCKER_HUB_USERNAME', 
+                                                     passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                        // Docker Hub 로그인
+                        sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
 
-        //             // Docker Hub에 이미지 푸시
-        //             sh "docker push $WEB_IMAGE_NAME"
-        //         }
-        //     }
-        // }
+                        // Docker Hub에 이미지 푸시
+                        sh "docker push $WEB_IMAGE_NAME"
+                    }
+                }
+            }
+        }
     }
 
     post {
